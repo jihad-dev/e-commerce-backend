@@ -2,11 +2,21 @@ import { IUser } from "./user.interface";
 import User from "./user.model";
 
 const createUser = async (user: IUser): Promise<IUser> => {
+    // Check if email already exists
+    const existingUser = await User.findOne({ email: user?.email });
+    if (existingUser) {
+        throw new Error('Email already exists');
+    }
     const result = await User.create(user);
     return result;
 }
 
 const createAdmin = async (user: IUser): Promise<IUser> => {
+    // Check if email already exists
+    const existingUser = await User.findOne({ email: user?.email });
+    if (existingUser) {
+        throw new Error('Email already exists');
+    }
     user.role = 'admin';
     const result = await User.create(user);
     return result;

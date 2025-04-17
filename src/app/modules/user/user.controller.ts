@@ -59,7 +59,6 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 const createAdmin = async (req: Request, res: Response): Promise<void> => {
-
     const user: IUser = req.body;
     const zodResponse = UserValidation.createUserValidationSchema.safeParse(user);
     if (!zodResponse.success) {
