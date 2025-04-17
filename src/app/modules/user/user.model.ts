@@ -19,12 +19,12 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true,
         trim: true,
-        
+
     },
     role: {
         type: String,
         required: true,
-        enum: ["admin", "user"],
+        enum: ["admin", "user", "superAdmin"],
         default: "user",
     },
     status: {

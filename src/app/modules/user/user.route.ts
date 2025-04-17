@@ -1,5 +1,6 @@
 import express from 'express';
 import { UserController } from './user.controller';
+import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
@@ -8,29 +9,14 @@ router.post(
     '/create-user',
     UserController.createUser
 );
-
 router.get('/',
+    auth(['admin', 'superAdmin']),
     UserController.getAllUser
 )
-
 router.delete(
     '/:id',
-    UserController.deleteUser
-);
-// Route to create an admin user
-router.post(
-    '/create-admin',
-    UserController.createAdmin
-);
+    auth(['admin', 'superAdmin']),
+    UserController.deleteUser);
 
-router.get(
-    '/',
-    UserController.getAllAdmin
-);
-
-router.delete(
-    '/:id',
-    UserController.deleteAdmin
-);
 
 export const UserRoutes = router;

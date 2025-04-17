@@ -1,13 +1,15 @@
 import { Model } from "mongoose";
 
+// Define and export TUserRole
+export type TUserRole =  "user" | "admin" | "superAdmin";
+
 export interface IUser{
     name: string;
     email: string;
     password: string;
-    role: "admin" | "user";
+    role: TUserRole;
     status: 'in-progress' | 'blocked';
     isDeleted: boolean;
-
 }
 
 

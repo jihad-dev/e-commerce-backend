@@ -5,7 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
 const loginUser = async (req: Request, res: Response): Promise<void> => {
-    const result = await AuthServices.loginUser(req.body);
+    const result = await AuthServices.login(req.body);
     sendResponse<IUser>(res, {
         statusCode: httpStatus.OK,
         success: true,
