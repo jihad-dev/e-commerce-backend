@@ -9,7 +9,7 @@ router.post(
     '/create-user',
     UserController.createUser
 );
-router.get('/',
+router.get('/all-user',
     auth(['admin', 'superAdmin']),
     UserController.getAllUser
 )

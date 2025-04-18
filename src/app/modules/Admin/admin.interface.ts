@@ -3,6 +3,7 @@ import { Model } from "mongoose";
 export type TAdminRole = "admin" | "superAdmin";
 
 export interface IAdmin {
+    userId:string;
     name: string;
     email: string;
     password: string;   

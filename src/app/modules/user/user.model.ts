@@ -3,7 +3,10 @@ import { IUser } from "./user.interface";
 import * as bcrypt from 'bcrypt';
 
 const userSchema = new Schema<IUser>({
-
+    userId: {
+        type: String,
+        unique: true,
+    },
     name: {
         type: String,
         required: true,
@@ -58,7 +61,7 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
     const obj = this.toObject();
     delete obj.password;
     return obj;
@@ -67,4 +70,3 @@ userSchema.methods.toJSON = function() {
 
 
 export const User = model<IUser>("User", userSchema);
-    

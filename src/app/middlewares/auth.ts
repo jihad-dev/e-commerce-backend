@@ -11,6 +11,7 @@ interface CustomJWTPayload extends JwtPayload {
 const auth = (allowedRoles: ('admin' | 'user' | 'superAdmin')[]): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
+    
 
     if (!token) {
       return res.status(401).json({ success: false, message: 'Unauthorized: No token provided' });
@@ -19,7 +20,7 @@ const auth = (allowedRoles: ('admin' | 'user' | 'superAdmin')[]): RequestHandler
     try {
       // Verify token
       const decoded = jwt.verify(token, config.jwt_secret as string) as CustomJWTPayload;
-
+      
       // Check if the role in the token is allowed
       if (!allowedRoles.includes(decoded?.role)) {
         return res.status(403).json({ success: false, message: 'Forbidden: You do not have permission to access this resource' });

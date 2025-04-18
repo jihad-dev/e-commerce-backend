@@ -4,6 +4,7 @@ import { Model } from "mongoose";
 export type TUserRole =  "user" | "admin" | "superAdmin";
 
 export interface IUser{
+    userId:string;
     name: string;
     email: string;
     password: string;

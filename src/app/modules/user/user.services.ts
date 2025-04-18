@@ -7,9 +7,26 @@ const createUser = async (user: IUser): Promise<IUser> => {
     if (existingUser) {
         throw new Error('Email already exists');
     }
-    const result = await User.create(user);
-    return result;
-}
+
+    // Find last userId (sorted descending by creation time)
+    const lastUser = await User.findOne().sort({ createdAt: -1 }).lean();
+
+    let newUserId = 'U-0001'; // Default custom ID
+
+    if (lastUser?.userId) {
+        const lastIdNumber = parseInt(lastUser.userId.split('-')[1]);
+        const nextIdNumber = lastIdNumber + 1;
+        newUserId = `U-${nextIdNumber.toString().padStart(4, '0')}`;
+    }
+
+    const newUser = await User.create({
+        ...user,
+        userId: newUserId, // custom ID
+    });
+
+    return newUser;
+};
+
 
 // get all user or admin 
 const getAllUser = async (): Promise<IUser[]> => {
@@ -27,5 +44,5 @@ export const UserServices = {
     createUser,
     getAllUser,
     deleteUser,
-  
+
 }

@@ -1,7 +1,6 @@
 export type ILoginUser = {
-    email: string;
+    userId: string;
     password: string;
-    role: 'admin' | 'user' | 'superAdmin';
 }
 
 
