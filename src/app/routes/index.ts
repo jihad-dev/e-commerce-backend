@@ -28,7 +28,8 @@ const moduleRoutes = [
     {
         path: "/cart",
         route: CartRoutes,
-    }
+    },
+  
 ];
 
 moduleRoutes.forEach((route) => router.use(route?.path, route?.route));
