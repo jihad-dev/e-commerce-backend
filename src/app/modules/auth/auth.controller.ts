@@ -2,16 +2,24 @@ import { AuthServices } from "./auth.services";
 import { Request, Response } from "express";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import config from "../../config";
 
-export const loginUser = async (req: Request, res: Response) => {
+ const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const result = await AuthServices.loginUser(email, password);
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: config.node_env === "production",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: "User logged in successfully",
-      data: result,
+      data: {
+        accessToken: result.accessToken,
+      },
     });
   } catch (error) {
     sendResponse(res, {
@@ -23,6 +31,8 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };  
 
+
 export const AuthController = {
     loginUser,
+  
 }

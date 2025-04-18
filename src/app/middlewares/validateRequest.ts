@@ -9,7 +9,7 @@ const validateRequest = (schema: AnyZodObject) => {
       body: req.body,
       query: req.query,
       params: req.params,
-      // cookies: req.cookies, // Optionally validate cookies if needed
+      cookies: req.cookies, // Optionally validate cookies if needed
     });
 
     // If validation is successful, proceed to the next middleware/controller
