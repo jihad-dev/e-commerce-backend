@@ -1,7 +1,7 @@
 import { z } from "zod";
 
  const loginUserValidation = z.object({
-    userId: z.string({ required_error: "User ID is required" }),
+    email: z.string({ required_error: "Email is required" }),
     password: z.string({ required_error: "Password is required" }).min(6),
 }); 
 

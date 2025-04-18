@@ -57,7 +57,40 @@ const getUserCart = async (userId: string) => {
   return cart;
 };
 
+// update cart 
+const updateCart = async (userId: string, payload: TCartItem) => {
+  const { productId, quantity } = payload;
+  const cart = await Cart.findOne({ userId });
+  if (!cart) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Cart not found');
+  }
+  const existingItemIndex = cart.items.findIndex(
+    (item) => item.productId.toString() === productId.toString(),
+  );
+  if (existingItemIndex > -1) {
+    cart.items[existingItemIndex].quantity = quantity;
+  }
+  await cart.save();
+  return cart;
+};
+// remove cart item 
+const removeCartItem = async (userId: string, productId: string) => {
+  const cart = await Cart.findOne({ userId });
+  if (!cart) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Cart not found');
+  }
+  const existingItemIndex = cart.items.findIndex(
+    (item) => item.productId.toString() === productId.toString(),
+  );
+  if (existingItemIndex > -1) {
+    cart.items.splice(existingItemIndex, 1);
+  } 
+  await cart.save();
+  return cart;
+};
 export const CartService = {
   addToCart,
   getUserCart,
+  updateCart,
+  removeCartItem,
 }; 

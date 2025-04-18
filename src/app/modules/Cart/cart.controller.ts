@@ -50,8 +50,33 @@ const getUserCart = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-
+// update cart 
+const updateCart = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+  const cartData = req.body;
+  const result = await CartService.updateCart(userId, cartData);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Cart updated successfully',
+    data: result, 
+  });
+});
+// remove cart item 
+const removeCartItem = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+  const productId = req.body.productId;
+  const result = await CartService.removeCartItem(userId, productId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Cart item removed successfully',
+    data: result,   
+  });
+});
 export const CartController = {
   addToCart,
   getUserCart,
+  updateCart,
+  removeCartItem,
 }; 

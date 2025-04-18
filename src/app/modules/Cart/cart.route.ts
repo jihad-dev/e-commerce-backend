@@ -22,5 +22,19 @@ router.get(
   CartController.getUserCart,
 );
 
+// Route to update cart
+router.put(
+  '/update-cart',
+  auth(["user", "admin", "superAdmin"]),
+  validateRequest(CartValidation.updateCartValidationSchema),
+  CartController.updateCart,
+);
+
+// Route to remove cart item
+router.delete(
+    '/remove-from-cart/:productId',
+    auth(["user", "admin", "superAdmin"]),
+    CartController.removeCartItem,
+);
 
 export const CartRoutes = router; 

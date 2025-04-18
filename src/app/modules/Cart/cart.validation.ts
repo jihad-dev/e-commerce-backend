@@ -10,6 +10,18 @@ const addToCartValidationSchema = z.object({
   }),
 });
 
+const updateCartValidationSchema = z.object({
+  body: z.object({
+    productId: z.string({ required_error: 'Product ID is required' }).refine((val) => {
+      return /^[0-9a-fA-F]{24}$/.test(val); 
+    }, { message: 'Invalid Product ID format' }),
+    quantity: z.number({ required_error: 'Quantity is required' }).int().positive({ message: 'Quantity must be a positive integer' }),
+  }),
+});
+
+  
+
 export const CartValidation = {
   addToCartValidationSchema,
+  updateCartValidationSchema,
 }; 

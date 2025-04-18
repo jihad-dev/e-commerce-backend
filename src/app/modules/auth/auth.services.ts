@@ -1,47 +1,44 @@
+// services/auth.service.ts
+
 import { Admin } from "../Admin/admin.model";
 import { User } from "../user/user.model";
-import bcrypt from 'bcrypt';
-import { ILoginUser } from "./auth.interface";
-import generateToken from "../../utils/generateToken";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import config from "../../config";
 
-// Define the expected return type for the login service
-interface LoginResult {
-  token: string;
-}
 
-// Modify login service to accept payload and return data
-const login = async (payload: ILoginUser): Promise<LoginResult> => {
-  const { userId, password } = payload;
-
-  let user: any = await Admin.findOne({ userId });
-  let role: 'admin' | 'user' = 'admin';
-
+export const loginUser = async (email: string, password: string) => {
+  let user = await User.findOne({ email });
+  let role = "user";
   if (!user) {
-    user = await User.findOne({ userId });
-    role = 'user';
+    user = await Admin.findOne({ email });
+    role = "admin";
   }
 
   if (!user) {
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error('Invalid password');
+    throw new Error("Invalid credentials");
   }
 
-  const token = generateToken({
-    userId: user.userId,
-    role: role,
-  });
-
+  const token = jwt.sign(
+    {
+      id: user.userId,
+      email: user.email,
+      role: role,
+    },
+    config.jwt_secret as string,
+    { expiresIn: "1d" }
+  );
 
   return {
-    token,
-
+    token
   };
 };
 
 export const AuthServices = {
-  login,
+  loginUser,
 };
