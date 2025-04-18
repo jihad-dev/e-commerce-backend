@@ -2,10 +2,7 @@ import { Query, Schema, model } from "mongoose";
 import { IAdmin } from "./admin.interface";
 import bcrypt from 'bcrypt';
 const adminSchema = new Schema<IAdmin>({
-    userId: {
-        type: String,
-        unique: true,
-    },
+    userId: { type: String, unique: true },
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true },
