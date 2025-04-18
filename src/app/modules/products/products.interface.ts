@@ -17,5 +17,6 @@ export type IProduct = {
     status: 'active' | 'inactive';
     shipping: number;
     seller: string;
+    isDeleted: boolean;
   }
   

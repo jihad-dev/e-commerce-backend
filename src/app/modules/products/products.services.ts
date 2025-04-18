@@ -13,9 +13,14 @@ const getSingleProductFromDB = async (id: string): Promise<IProduct | null> => {
     const result = await ProductModel.findOne({ _id: id });
     return result;
 }
+const deleteProductFromDB = async (id: string): Promise<IProduct | null> => {
+    const result = await ProductModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+    return result;
+}
 export const productServices = {
     createProductIntoDB,
     getAllProductsFromDB,
     getSingleProductFromDB,
+    deleteProductFromDB,
 }
 

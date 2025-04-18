@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Query, Schema, model } from "mongoose";
 import { IProduct } from "./products.interface";
 
 const productSchema = new Schema<IProduct>({
@@ -20,6 +20,14 @@ const productSchema = new Schema<IProduct>({
     status: { type: String, required: true },
     shipping: { type: Number, required: true },
     seller: { type: String, required: true },
+    isDeleted: { type: Boolean, required: true, default: false },
 
 });
+
+// 👇 This automatically filters out isDeleted: true from all find queries
+productSchema.pre<Query<any, any>>(/^find/, function (next) {
+    this.where({ isDeleted: false });
+    next();
+});
+ 
 export const ProductModel = model<IProduct>("Product", productSchema);

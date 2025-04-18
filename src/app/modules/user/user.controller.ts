@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sendResponse } from "../../utils/sendResponse";
-import { IUser } from "./user.interface";
+import { IUser, TUserStatus } from "./user.interface";
 import { UserServices } from "./user.services";
 import httpStatus from "http-status";
 import { UserValidation } from './user.validation';
@@ -48,8 +48,57 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
         data: result,
     });
 }
+
+const getSingleUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const result = await UserServices.getSingleUser(id);
+    sendResponse<IUser>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Single User fetched successfully",
+        data: result,
+    });
+}
+
+export const changeUserRole = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const { role } = req.body;
+  const result = await UserServices.changeUserRole(id, role);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User role updated successfully",
+    data: result,
+  });
+};
+export const changeUserStatus = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const result = await UserServices.changeUserStatus(id, status);
+  if (!result) {
+    sendResponse<IUser>(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: "User not found",
+      data: null,
+    });
+    return;
+  }
+  sendResponse<IUser>(res, {    
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User status updated successfully",
+    data: result,
+  });
+};
+
+
+
 export const UserController = {
     createUser,
     getAllUser,
     deleteUser,
+    getSingleUser,
+    changeUserRole,
+    changeUserStatus,
 };

@@ -13,6 +13,18 @@ router.get('/all-user',
     auth(['admin', 'superAdmin']),
     UserController.getAllUser
 )
+router.get('/:id',
+    UserController.getSingleUser
+)
+router.patch('/:id',
+    auth(['admin', 'superAdmin']),
+    UserController.changeUserRole
+)
+router.patch('/status/:id',
+    auth(['admin', 'superAdmin']),
+    UserController.changeUserStatus
+)
+
 router.delete(
     '/:id',
     auth(['admin', 'superAdmin']),

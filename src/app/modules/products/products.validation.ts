@@ -19,6 +19,7 @@ export const createProductValidation = z.object({
     status: z.string().min(1),
     shipping: z.number().min(1),
     seller: z.string().min(1),
+    isDeleted: z.boolean(),
 });
 
 export const updateProductValidation = z.object({
@@ -40,6 +41,7 @@ export const updateProductValidation = z.object({
     status: z.string().min(1).optional(),
     shipping: z.number().min(1).optional(),
     seller: z.string().min(1).optional(),
+    isDeleted: z.boolean().optional(),
 });
 
 export const productValidations ={

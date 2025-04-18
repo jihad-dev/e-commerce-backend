@@ -2,6 +2,7 @@ import { Model } from "mongoose";
 
 // Define and export TUserRole
 export type TUserRole =  "user" | "admin" | "superAdmin";
+export type TUserStatus = 'in-progress' | 'blocked';
 
 export interface IUser{
     userId:string;
@@ -9,7 +10,7 @@ export interface IUser{
     email: string;
     password: string;
     role: TUserRole;
-    status: 'in-progress' | 'blocked';
+    status: TUserStatus;
     isDeleted: boolean;
 }
 

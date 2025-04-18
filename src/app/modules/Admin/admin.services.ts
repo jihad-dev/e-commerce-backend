@@ -27,7 +27,13 @@ const createAdmin = async (admin: IAdmin): Promise<IAdmin> => {
     return newUser;
 };
 
+const getAllAdmin = async (): Promise<IAdmin[]> => {
+    const admins = await Admin.find();
+    return admins;
+};
+
 export const AdminServices = {
     createAdmin,
+    getAllAdmin,
 }
 

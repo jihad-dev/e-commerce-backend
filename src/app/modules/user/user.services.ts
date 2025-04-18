@@ -39,10 +39,26 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
     return result;
 }
 
-
+// get single user
+const getSingleUser = async (id: string): Promise<IUser | null> => {
+    const result = await User.findById(id);
+    return result;
+}
+// change user role
+const changeUserRole = async (id: string, role: string): Promise<IUser | null> => {
+    const result = await User.findByIdAndUpdate(id, { role }, { new: true });
+    return result;
+}
+// change user status
+const changeUserStatus = async (id: string, status: string): Promise<IUser | null> => {
+    const result = await User.findByIdAndUpdate(id, { status }, { new: true });
+    return result;
+}
 export const UserServices = {
     createUser,
     getAllUser,
     deleteUser,
-
+    getSingleUser,
+    changeUserRole,
+    changeUserStatus,
 }
