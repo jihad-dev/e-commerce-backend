@@ -29,13 +29,13 @@ const createProduct = catchAsync(async (req, res): Promise<void> => {
 });
 
 const getAllProducts = catchAsync(async (req, res): Promise<void> => {
-    console.log(req.cookies);
-    const result = await productServices.getAllProductsFromDB();
+
+    const result = await productServices.getAllProductsFromDB(req.query);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Products fetched successfully",
-        data: result,
+        data: result    
     });
 });
 

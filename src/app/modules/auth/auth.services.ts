@@ -54,7 +54,6 @@ const refreshToken = async (refreshToken: string) => {
   throw new Error("Invalid refresh token");
  }
 
-
  // check if the user exists
  // Use decoded.id after type checking
  const user = await User.findOne({ userId: decoded.id });
