@@ -31,8 +31,17 @@ import config from "../../config";
   }
 };  
 
-
+const refreshToken = async (req: Request, res: Response) => {
+    const { refreshToken } = req.cookies;
+    const result = await AuthServices.refreshToken(refreshToken);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Token refreshed successfully",
+      data: result,
+    });
+}
 export const AuthController = {
     loginUser,
-  
+    refreshToken,
 }

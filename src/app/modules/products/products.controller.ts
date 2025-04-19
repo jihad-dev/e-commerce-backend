@@ -29,6 +29,7 @@ const createProduct = catchAsync(async (req, res): Promise<void> => {
 });
 
 const getAllProducts = catchAsync(async (req, res): Promise<void> => {
+    console.log(req.cookies);
     const result = await productServices.getAllProductsFromDB();
     sendResponse(res, {
         statusCode: httpStatus.OK,

@@ -5,6 +5,7 @@ import { ProductRoutes } from "./app/modules/products/products.route";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import { notFoundRoute } from "./app/middlewares/notFoundRoute";
 import router from "./app/routes";
+import cookieParser from "cookie-parser";
 const app = express();
 
 // parser
@@ -13,7 +14,7 @@ app.use(cors({
     origin: "http://localhost:5173",
     credentials: true,
 }));
-
+app.use(cookieParser());
 // application routes
 app.use("/api/v1", router);
 

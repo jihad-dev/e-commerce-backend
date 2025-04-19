@@ -1,3 +1,4 @@
+import { log } from "console";
 import { IProduct } from "./products.interface";
 import { ProductModel } from "./products.model";
 
@@ -6,6 +7,7 @@ const createProductIntoDB = async (product: IProduct) => {
     return result;
 }
 const getAllProductsFromDB = async (): Promise<IProduct[]> => {
+   
     const result = await ProductModel.find();
     return result;
 }

@@ -5,6 +5,13 @@ import { z } from "zod";
     password: z.string({ required_error: "Password is required" }).min(6),
 }); 
 
+const refreshTokenValidation = z.object({
+   cookies: z.object({
+    refreshToken: z.string({ required_error: "Refresh token is required" }),
+   }),
+}); 
+
 export const AuthValidation = {
     loginUserValidation,
+    refreshTokenValidation,
 }
