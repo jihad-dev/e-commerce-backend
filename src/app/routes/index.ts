@@ -5,6 +5,7 @@ import { UserRoutes } from "../modules/user/user.route";
 import { AuthRoutes } from "../modules/auth/auth.route";
 import { AdminRoutes } from "../modules/Admin/admin.route";
 import { CartRoutes } from "../modules/Cart/cart.route";
+import { CategoryRoutes } from "../modules/Category/category.route";
 
 const router = Router();
 
@@ -29,7 +30,11 @@ const moduleRoutes = [
         path: "/cart",
         route: CartRoutes,
     },
-  
+    {
+        path: '/categories', 
+        route: CategoryRoutes,
+    }
+
 ];
 
 moduleRoutes.forEach((route) => router.use(route?.path, route?.route));

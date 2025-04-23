@@ -26,60 +26,62 @@ export const loginUser = async (email: string, password: string) => {
 
   const accessToken = jwt.sign(
     {
-      id: user.userId,
-      email: user.email,
+      id: user?.userId,
+      email: user?.email,
       role: role,
     },
     config.jwt_secret as string,
-    { expiresIn: "1d" }
+    { expiresIn: "10s" }
   );
   // refresh token
   const refreshToken = jwt.sign(
-    { id: user.userId, email: user.email, role: role },
+    {
+      id: user?.userId,
+      email: user?.email,
+      role: role,
+    },
     config.jwt_refresh_secret as string,
-    { expiresIn: "30d" }
-  );  
-
+    { expiresIn: "20s" }
+  );
   return {
     accessToken,
     refreshToken,
+
   };
 };
 
 const refreshToken = async (refreshToken: string) => {
- // check if the refresh token is valid
- const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
- // Type guard to ensure decoded is JwtPayload
- if (typeof decoded === 'string' || !decoded) {
-  throw new Error("Invalid refresh token");
- }
+  const decoded = jwt.verify(refreshToken, config.jwt_refresh_secret as string) as JwtPayload;
+  if (typeof decoded === 'string' || !decoded) {
+    throw new Error("Invalid refresh token");
+  }
+  let role = "user";
+  let user = await User.findOne({ email: decoded?.email });
+  if (!user) {
+    user = await Admin.findOne({ email: decoded?.email });
+    role = "admin";
+  }
 
- // check if the user exists
- // Use decoded.id after type checking
- const user = await User.findOne({ userId: decoded.id });
+  if (!user) {
+    throw new Error("User not found");
+  }
 
- if (!user) {
-  throw new Error("User not found");
- }
+  if (!user) {
+    throw new Error("User not found0000");
+  }
+  const accessToken = jwt.sign(
+    {
+      id: user?.userId,
+      email: user?.email,
+      role: role,
+    },
+    config.jwt_secret as string,
+    { expiresIn: "30s" }
+  );
 
- // Extract role from decoded token
- const role = decoded.role;
-
- const accessToken = jwt.sign(
-  {
-    id: user.userId,
-    email: user.email,
-    role: role, // Use extracted role
-  },
-  config.jwt_secret as string,
-  { expiresIn: "1d" }
-);
-
- // Return the new access token
- return {
+  return {
     accessToken,
- };
-
+  };
 
 }
 

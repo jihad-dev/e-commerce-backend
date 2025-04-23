@@ -63,9 +63,11 @@ const deleteProduct = catchAsync(async (req, res): Promise<void> => {
 
 
 
+
 export const productController = {
     createProduct,
     getAllProducts,
     getSingleProduct,
     deleteProduct,
+  
 };
