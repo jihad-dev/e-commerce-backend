@@ -1,4 +1,3 @@
-import { Admin } from "../Admin/admin.model";
 import { initPayment } from "../Payment/payment.utils";
 import { User } from "../user/user.model";
 import { Cart } from "../Cart/cart.model";
@@ -8,11 +7,7 @@ import { nanoid } from 'nanoid';
 
 const createOrder = async (payload: IOrder) => {
   let user = await User.findById(payload.userId);
-  let role = "user";
-  if (!user) {
-    user = await Admin.findById(payload.userId);
-    role = "admin";
-  }
+
   if (!user) {
     throw new Error("User not found");
   }
@@ -21,7 +16,7 @@ const createOrder = async (payload: IOrder) => {
   const orderData = {
     ...payload,
     userId: payload.userId,
-    userModel: role,
+  
     // transactionId: transactionId,
   };
 

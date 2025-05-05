@@ -24,11 +24,11 @@ const loginUser = async (req: Request, res: Response) => {
         accessToken: result.accessToken,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     sendResponse(res, {
       statusCode: httpStatus.BAD_REQUEST,
       success: false,
-      message: "User login failed",
+      message: error.message,
       data: error,
     });
   }

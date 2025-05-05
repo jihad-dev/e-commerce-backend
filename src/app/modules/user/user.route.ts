@@ -9,6 +9,10 @@ router.post(
     '/create-user',
     UserController.createUser
 );
+router.get('/all-admin',
+    auth(['admin', 'superAdmin']),
+    UserController.getAllAdmin
+)
 router.get('/all-user',
     auth(['admin', 'superAdmin']),
     UserController.getAllUser
@@ -16,6 +20,7 @@ router.get('/all-user',
 router.get('/:id',
     UserController.getSingleUser
 )
+
 router.patch('/:id',
     auth(['admin', 'superAdmin']),
     UserController.changeUserRole

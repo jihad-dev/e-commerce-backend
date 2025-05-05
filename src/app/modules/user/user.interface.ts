@@ -5,7 +5,6 @@ export type TUserRole =  "user" | "admin" | "superAdmin";
 export type TUserStatus = 'in-progress' | 'blocked';
 
 export interface IUser{
-    userId:string;
     name: string;
     email: string;
     password: string;

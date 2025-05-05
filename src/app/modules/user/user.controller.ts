@@ -7,58 +7,68 @@ import { UserValidation } from './user.validation';
 
 const createUser = async (req: Request, res: Response): Promise<void> => {
 
-    const user: IUser = req.body;
-    const zodResponse = UserValidation.createUserValidationSchema.safeParse(user);
-    if (!zodResponse.success) {
-        sendResponse(res, {
-            statusCode: httpStatus.BAD_REQUEST,
-            success: false,
-            message: "User creation failed",
-            data: null,
-        });
-        return;
-    }
-    const result = await UserServices.createUser(user);
-    sendResponse<IUser>(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "User created successfully",
-        data: result,
+  const user: IUser = req.body;
+  const zodResponse = UserValidation.createUserValidationSchema.safeParse(user);
+  if (!zodResponse.success) {
+    sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: "User creation failed",
+      data: null,
     });
+    return;
+  }
+  const result = await UserServices.createUser(user);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User created successfully",
+    data: result,
+  });
 
 }
 const getAllUser = async (req: Request, res: Response): Promise<void> => {
-    const result = await UserServices.getAllUser();
-    sendResponse<IUser[]>(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Users fetched successfully",
-        data: result,
-    });
+  const result = await UserServices.getAllUser();
+  sendResponse<IUser[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Users fetched successfully",
+    data: result,
+  });
 
 }
+const getAllAdmin = async (req: Request, res: Response): Promise<void> => {
+  const result = await UserServices.getAllAdmin();
+  sendResponse<IUser[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Admins fetched successfully",
+    data: result,
+  });
+}
 
-const deleteUser = async (req: Request, res: Response): Promise<void> => {  
-    const { id } = req.params;
-    const result = await UserServices.deleteUser(id);
-    sendResponse<IUser>(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "User deleted successfully",
-        data: result,
-    });
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const result = await UserServices.deleteUser(id);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User deleted successfully",
+    data: result,
+  });
 }
 
 const getSingleUser = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-    const result = await UserServices.getSingleUser(id);
-    sendResponse<IUser>(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Single User fetched successfully",
-        data: result,
-    });
+  const { id } = req.params;
+  const result = await UserServices.getSingleUser(id);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Single User fetched successfully",
+    data: result,
+  });
 }
+
 
 export const changeUserRole = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
@@ -84,7 +94,7 @@ export const changeUserStatus = async (req: Request, res: Response): Promise<voi
     });
     return;
   }
-  sendResponse<IUser>(res, {    
+  sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "User status updated successfully",
@@ -95,10 +105,11 @@ export const changeUserStatus = async (req: Request, res: Response): Promise<voi
 
 
 export const UserController = {
-    createUser,
-    getAllUser,
-    deleteUser,
-    getSingleUser,
-    changeUserRole,
-    changeUserStatus,
+  createUser,
+  getAllUser,
+  getAllAdmin,
+  deleteUser,
+  getSingleUser,
+  changeUserRole,
+  changeUserStatus,
 };
