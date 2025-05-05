@@ -1,10 +1,11 @@
-
 import { Admin } from "../Admin/admin.model";
 import { initPayment } from "../Payment/payment.utils";
 import { User } from "../user/user.model";
+import { Cart } from "../Cart/cart.model";
 import { IOrder } from "./order.interface";
 import { Order } from "./order.model";
 import { nanoid } from 'nanoid';
+
 const createOrder = async (payload: IOrder) => {
   let user = await User.findById(payload.userId);
   let role = "user";
@@ -15,15 +16,19 @@ const createOrder = async (payload: IOrder) => {
   if (!user) {
     throw new Error("User not found");
   }
-  
+
   const transactionId = nanoid(10);
   const orderData = {
     ...payload,
     userId: payload.userId,
+    userModel: role,
     // transactionId: transactionId,
   };
 
   const result = await Order.create(orderData);
+
+  // Delete cart items after successful order creation
+  await Cart.findOneAndDelete({ userId: payload.userId }); // TODO: check if this is correct
 
   // যদি paymentMethod 'Cash on Delivery' হয় তাহলে gateway call করবো না
   if (payload.paymentMethod === 'Cash on Delivery') {
@@ -41,16 +46,16 @@ const createOrder = async (payload: IOrder) => {
       customerCity: result.shippingInfo.city,
       customerCountry: result.shippingInfo.country,
       customerPostcode: result.shippingInfo.postalCode,
-      
+
     }
     const paymentSession = await initPayment(paymentData)
-    
+
     return {
       result,
       paymentSession,
     };
- 
-    
+
+
 
 
   }
