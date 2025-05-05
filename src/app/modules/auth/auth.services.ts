@@ -18,7 +18,7 @@ export const loginUser = async (email: string, password: string) => {
   if (!user) {
     throw new Error("User not found");
   }
-
+  
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     throw new Error("Invalid credentials");
@@ -26,12 +26,12 @@ export const loginUser = async (email: string, password: string) => {
 
   const accessToken = jwt.sign(
     {
-      id: user?.userId,
+      id: user?._id, // TODO: change to userId
       email: user?.email,
       role: role,
     },
     config.jwt_secret as string,
-    { expiresIn: "10s" }
+    { expiresIn: "3d" }
   );
   // refresh token
   const refreshToken = jwt.sign(
@@ -41,7 +41,7 @@ export const loginUser = async (email: string, password: string) => {
       role: role,
     },
     config.jwt_refresh_secret as string,
-    { expiresIn: "20s" }
+    { expiresIn: "30d" }
   );
   return {
     accessToken,

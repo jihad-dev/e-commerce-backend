@@ -4,44 +4,29 @@ import catchAsync from '../../utils/catchAsync'; // Assuming utility path
 import { CartService } from './cart.service';
 import { Request, Response } from 'express';
 import { sendResponse } from '../../utils/sendResponse';
+import AppError from '../../errors/AppError';
 
-// Define the expected user payload structure based on console.log
-type UserPayload = {
-  userId: string;
-  role: string;
-};
 
 const addToCart = catchAsync(async (req: Request, res: Response) => {
-  // Assert the type of req.user here to match the actual payload
-  const user = req.user as UserPayload | undefined; 
-  
-  // Ensure user is authenticated and user id is available
-  if (!user?.userId) { // Check for userId on the asserted type
-    sendResponse(res, {
-      statusCode: httpStatus.UNAUTHORIZED,
-      success: false,
-      message: 'Authentication required',
-      data: null,
-    });
-    return;
+  const userId = req?.user?.id;
+  if (!userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
   }
-
-  const userId = user.userId; // Use userId from the asserted type
-  const cartData = req.body; // Contains productId and quantity (validated)
-
+  const cartData = req.body;
   const result = await CartService.addToCart(userId, cartData);
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Item added to cart successfully',
     data: result,
   });
-});
-
+}); 
 // get user cart 
 const getUserCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?.userId;
+  const userId = req?.user?.id;
+  if (!userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
+  }
   const result = await CartService.getUserCart(userId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -52,7 +37,10 @@ const getUserCart = catchAsync(async (req: Request, res: Response) => {
 });
 // update cart 
 const updateCart = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?.userId;
+  const userId = req?.user?.id;
+  if (!userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
+  }
   const cartData = req.body;
   const result = await CartService.updateCart(userId, cartData);
   sendResponse(res, {
@@ -64,8 +52,11 @@ const updateCart = catchAsync(async (req: Request, res: Response) => {
 });
 // remove cart item 
 const removeCartItem = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?.userId;
+  const userId = req?.user?.id;
   const productId = req.body.productId;
+  if (!userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
+  }
   const result = await CartService.removeCartItem(userId, productId);
   sendResponse(res, {
     statusCode: httpStatus.OK,

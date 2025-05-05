@@ -6,6 +6,7 @@ import { AuthRoutes } from "../modules/auth/auth.route";
 import { AdminRoutes } from "../modules/Admin/admin.route";
 import { CartRoutes } from "../modules/Cart/cart.route";
 import { CategoryRoutes } from "../modules/Category/category.route";
+import { OrderRoutes } from "../modules/Order/order.route";
 
 const router = Router();
 
@@ -33,6 +34,10 @@ const moduleRoutes = [
     {
         path: '/categories', 
         route: CategoryRoutes,
+    },
+    {
+        path: '/orders',
+        route: OrderRoutes,
     }
 
 ];
