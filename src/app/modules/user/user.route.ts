@@ -9,6 +9,7 @@ router.post(
     '/create-user',
     UserController.createUser
 );
+
 router.get('/all-admin',
     auth(['admin', 'superAdmin']),
     UserController.getAllAdmin
@@ -20,6 +21,10 @@ router.get('/all-user',
 router.get('/:id',
     UserController.getSingleUser
 )
+router.get('/admin/:id',
+    UserController.getSingleAdmin
+)
+
 
 router.patch('/:id',
     auth(['admin', 'superAdmin']),
@@ -34,6 +39,10 @@ router.delete(
     '/:id',
     auth(['admin', 'superAdmin']),
     UserController.deleteUser);
+
+router.delete('/admin/:id',
+    auth(['admin', 'superAdmin']),
+    UserController.deleteAdmin);
 
 
 export const UserRoutes = router;

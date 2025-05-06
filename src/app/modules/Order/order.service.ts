@@ -16,7 +16,7 @@ const createOrder = async (payload: IOrder) => {
   const orderData = {
     ...payload,
     userId: payload.userId,
-  
+
     // transactionId: transactionId,
   };
 
@@ -43,7 +43,16 @@ const createOrder = async (payload: IOrder) => {
       customerPostcode: result.shippingInfo.postalCode,
 
     }
-    const paymentSession = await initPayment(paymentData)
+    const paymentSession = await initPayment(paymentData);
+    
+     await Order.findByIdAndUpdate(result._id, {
+      paymentInfo: {
+        transactionId,
+        totalPrice: result.totalPrice,
+        customerEmail: user?.email,
+        customerPhone: result.shippingInfo.phone
+      }
+    }, { new: true });
 
     return {
       result,

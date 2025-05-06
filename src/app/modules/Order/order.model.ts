@@ -25,11 +25,22 @@ const shippingInfoSchema = new Schema<IShippingInfo>(
 
 const PaymentInfoSchema: Schema = new Schema<IPaymentInfo>(
   {
-    pgTxnId: { type: String, required: true },
-    bankTxnId: { type: String },
-    status: { type: String, required: true },
-    cardType: { type: String },
-    paymentDate: { type: Date },
+    transactionId: {
+      type: String,
+      required: true,
+    },
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
+    customerEmail: {
+      type: String,
+      required: true,
+    },
+    customerPhone: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -43,6 +54,7 @@ const orderSchema = new Schema<IOrder>(
     shippingInfo: shippingInfoSchema,
     paymentInfo: PaymentInfoSchema,
     paymentMethod: { type: String, required: true },
+    paymentStatus: { type: String, required: true, default: 'Pending' },
     totalPrice: { type: Number, required: true },
     status: {
       type: String,

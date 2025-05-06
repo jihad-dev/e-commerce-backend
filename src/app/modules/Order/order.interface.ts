@@ -14,11 +14,11 @@ export interface IShippingInfo {
     phone: string;
 }
 export interface IPaymentInfo {
-    pgTxnId: string;
-    bankTxnId?: string;
-    status: string;
-    cardType?: string;
-    paymentDate?: Date;
+    transactionId: string;
+    totalPrice: number;
+    customerEmail: string;
+    customerPhone: string;
+
 }
 
 export interface IOrder {
@@ -27,8 +27,10 @@ export interface IOrder {
     orderItems: IOrderItem[];
     shippingInfo: IShippingInfo;
     paymentMethod: string;
+    paymentStatus: string;
     paymentInfo?: IPaymentInfo;
     totalPrice: number;
+
     status: 'Pending' | 'Shipped' | 'Delivered';
 
 }
