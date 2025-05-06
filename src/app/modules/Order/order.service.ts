@@ -1,6 +1,5 @@
 import { initPayment } from "../Payment/payment.utils";
 import { User } from "../user/user.model";
-import { Cart } from "../Cart/cart.model";
 import { IOrder } from "./order.interface";
 import { Order } from "./order.model";
 import { nanoid } from 'nanoid';
@@ -62,6 +61,10 @@ const getOrderById = async (id: string) => {
   const result = await Order.findById(id);
   return result;
 };
+const getUserOrder = async (userId: string) => {
+  const result = await Order.find({ userId }).populate('orderItems.product').populate('userId');
+  return result;
+};
 
 const updateOrderStatus = async (id: string, status: string) => {
   const result = await Order.findByIdAndUpdate(id, { status }, { new: true });
@@ -79,5 +82,6 @@ export const orderService = {
   getOrders,
   getOrderById,
   updateOrderStatus,
-  deleteOrder
+  deleteOrder,
+  getUserOrder
 };
