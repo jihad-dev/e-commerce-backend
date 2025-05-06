@@ -3,10 +3,16 @@ import { IProduct } from "./products.interface";
 import { ProductModel } from "./products.model";
 
 const createProductIntoDB = async (product: IProduct) => {
-   
-    const result = await ProductModel.create(product);
+    const finalPrice = product.price - (product.price * product.discount) / 100;
+
+    const result = await ProductModel.create({
+        ...product,
+        finalPrice,
+    });
+
     return result;
-}
+};
+
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
     const productQuery = new QueryBuilder(ProductModel.find(), query)
         .search(['title', 'description'])
@@ -15,7 +21,7 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
         .paginate()
         .fields();
     const result = await productQuery.modelQuery;
-    const meta = await productQuery.countTotal(); 
+    const meta = await productQuery.countTotal();
 
     return {
         meta,
@@ -36,5 +42,5 @@ export const productServices = {
     getAllProductsFromDB,
     getSingleProductFromDB,
     deleteProductFromDB,
-    
+
 }

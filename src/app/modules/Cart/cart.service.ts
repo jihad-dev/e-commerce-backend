@@ -88,9 +88,20 @@ const removeCartItem = async (userId: string, productId: string) => {
   await cart.save();
   return cart;
 };
+// clear cart 
+const clearCart = async (userId: string) => {
+  const cart = await Cart.findOne({ userId });
+  if (!cart) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Cart not found');
+  }
+  cart.items = [];
+  await cart.save();
+  return cart;
+};
 export const CartService = {
   addToCart,
   getUserCart,
   updateCart,
   removeCartItem,
+  clearCart,
 }; 

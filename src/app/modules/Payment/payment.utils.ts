@@ -2,14 +2,19 @@ import config from "../../config";
 import axios from "axios";
 
 
-export const initPayment = async (paymentData: any) => {
+export const initPayment = async (paymentData: any, payload: any) => {
+  
+    const orderData = {
+        ...payload,
+        userId: payload.userId,
+    };
     const res = await axios.post(`${config.payment_url as string}`, {
         store_id: config.store_id as string,
         signature_key: config.signature_key as string,
         tran_id: paymentData?.transactionId,
-        success_url: `${config.success_url as string}?transactionId=${paymentData?.transactionId}`,
-        fail_url: "http://www.merchantdomain.com/failedpage.html",
-        cancel_url: "http://www.merchantdomain.com/cancellpage.html",
+        success_url: `${config.success_url as string}?transactionId=${paymentData?.transactionId}&orderdata=${encodeURIComponent(JSON.stringify(orderData))}&paymentStatus=Success`,
+        fail_url: `${config.success_url as string}?paymentStatus=Failed`,
+        cancel_url: "http://localhost:5173",
         amount: paymentData?.totalPrice,
         currency: "BDT",
         desc: "Merchant Registration Payment",

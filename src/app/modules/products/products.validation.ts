@@ -5,7 +5,7 @@ export const createProductValidation = z.object({
     description: z.string().min(1),
     price: z.number().min(1),
     discount: z.number().min(1),
-    finalPrice: z.number().min(1),
+    finalPrice: z.number().min(1).optional(),
     category: z.string().min(1),
     type: z.string().min(1),
     brand: z.string().min(1),

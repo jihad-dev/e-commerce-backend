@@ -20,48 +20,33 @@ const createOrder = async (payload: IOrder) => {
     // transactionId: transactionId,
   };
 
-  const result = await Order.create(orderData);
 
-  // Delete cart items after successful order creation
-  await Cart.findOneAndDelete({ userId: payload.userId }); // TODO: check if this is correct
 
   // যদি paymentMethod 'Cash on Delivery' হয় তাহলে gateway call করবো না
   if (payload.paymentMethod === 'Cash on Delivery') {
+    const result = await Order.create(orderData);
     return {
       result,
     };
   } else {
     const paymentData = {
       transactionId,
-      totalPrice: result.totalPrice,
+      totalPrice: payload.totalPrice,
       custrmerName: user?.name,
       customerEmail: user?.email,
-      customerPhone: result.shippingInfo.phone,
-      customerAddress: result.shippingInfo.address,
-      customerCity: result.shippingInfo.city,
-      customerCountry: result.shippingInfo.country,
-      customerPostcode: result.shippingInfo.postalCode,
+      customerPhone: payload.shippingInfo.phone,
+      customerAddress: payload.shippingInfo.address,
+      customerCity: payload.shippingInfo.city,
+      customerCountry: payload.shippingInfo.country,
+      customerPostcode: payload.shippingInfo.postalCode,
 
     }
-    const paymentSession = await initPayment(paymentData);
-    
-     await Order.findByIdAndUpdate(result._id, {
-      paymentInfo: {
-        transactionId,
-        totalPrice: result.totalPrice,
-        customerEmail: user?.email,
-        customerPhone: result.shippingInfo.phone
-      }
-    }, { new: true });
+    const paymentSession = await initPayment(paymentData, payload);
 
+   
     return {
-      result,
       paymentSession,
     };
-
-
-
-
   }
 
 

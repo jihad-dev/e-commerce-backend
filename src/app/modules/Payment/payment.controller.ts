@@ -2,10 +2,16 @@ import { Request, Response } from "express";
 import { paymentServices } from "./payment.services";
 
 const confirmationController = async (req: Request, res: Response) => {
-    console.log(req.query.transactionId);
-    const result = await paymentServices.confirmationService(req.query.transactionId as string);
-   
-    res.send(`<h1>Payment Success</h1>`);
+    const { transactionId, paymentStatus, orderdata } = req.query;
+    let parsedOrderData = null;
+
+    // orderdata থাকলে তবেই parse করো
+    if (orderdata) {
+        parsedOrderData = JSON.parse(decodeURIComponent(orderdata as string));
+    }
+    const result = await paymentServices.confirmationService(transactionId as string, paymentStatus as string, parsedOrderData);
+
+    res.send(result);
 }
 
 
@@ -15,4 +21,4 @@ const confirmationController = async (req: Request, res: Response) => {
 export const paymentController = {
     confirmationController,
 }
-  
+

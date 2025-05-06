@@ -65,9 +65,25 @@ const removeCartItem = catchAsync(async (req: Request, res: Response) => {
     data: result,   
   });
 });
+// clear cart 
+const clearCart = catchAsync(async (req: Request, res: Response) => {
+  const userId = req?.user?.id;
+  if (!userId) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
+  }
+  const result = await CartService.clearCart(userId); 
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Cart cleared successfully',
+    data: result,
+  });
+});
+
 export const CartController = {
   addToCart,
   getUserCart,
   updateCart,
   removeCartItem,
+  clearCart,
 }; 
