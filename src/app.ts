@@ -1,7 +1,6 @@
 import express, { NextFunction } from "express";
 import cors from "cors";
 import { Request, Response } from "express";
-import { ProductRoutes } from "./app/modules/products/products.route";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import { notFoundRoute } from "./app/middlewares/notFoundRoute";
 import router from "./app/routes";
@@ -11,7 +10,7 @@ const app = express();
 // parser
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5173", "https://e-commerce-backend-zeta-five.vercel.app"],
+    origin: ["http://localhost:5173", "https://e-commerce-lyart-five-58.vercel.app"],
     credentials: true,
 }));
 app.use(cookieParser());
