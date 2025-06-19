@@ -9,12 +9,13 @@ interface CustomJWTPayload extends JwtPayload {
 }
 
 const auth = (allowedRoles: ('admin' | 'user' | 'superAdmin')[]): RequestHandler => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const token = req.headers.authorization;
     
 
     if (!token) {
-      return res.status(401).json({ success: false, message: 'Unauthorized: No token provided' });
+      res.status(401).json({ success: false, message: 'Unauthorized: No token provided' });
+      return;
     }
 
     try {
@@ -23,7 +24,8 @@ const auth = (allowedRoles: ('admin' | 'user' | 'superAdmin')[]): RequestHandler
       
       // Check if the role in the token is allowed
       if (!allowedRoles.includes(decoded?.role)) {
-        return res.status(403).json({ success: false, message: 'Forbidden: You do not have permission to access this resource' });
+        res.status(403).json({ success: false, message: 'Forbidden: You do not have permission to access this resource' });
+        return;
       }
 
       // Attach decoded user info to the request
@@ -32,13 +34,16 @@ const auth = (allowedRoles: ('admin' | 'user' | 'superAdmin')[]): RequestHandler
     } catch (err) {
       // Handle specific JWT errors if needed (e.g., TokenExpiredError)
       if (err instanceof jwt.TokenExpiredError) {
-        return res.status(401).json({ success: false, message: 'Unauthorized: Token expired' });
+        res.status(401).json({ success: false, message: 'Unauthorized: Token expired' });
+        return;
       }
       if (err instanceof jwt.JsonWebTokenError) {
-        return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
+        res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
+        return;
       }
       // Generic error
-      return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
+      res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
+      return;
     }
   };
 };

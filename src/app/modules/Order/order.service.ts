@@ -2,7 +2,9 @@ import { initPayment } from "../Payment/payment.utils";
 import { User } from "../user/user.model";
 import { IOrder } from "./order.interface";
 import { Order } from "./order.model";
-import { nanoid } from 'nanoid';
+import crypto from 'crypto';
+
+const nanoid = (size = 10) => crypto.randomBytes(size).toString('hex').slice(0, size);
 
 const createOrder = async (payload: IOrder) => {
   let user = await User.findById(payload.userId);

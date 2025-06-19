@@ -15,7 +15,7 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
         throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated or userId missing');
     }
 
-    const order = await orderService.createOrder({ orderItems, shippingInfo, paymentMethod, totalPrice, userId, phone, status: 'Pending' });
+    const order = await orderService.createOrder({ orderItems, shippingInfo, paymentMethod, totalPrice, userId, phone, status: 'Pending', paymentStatus: 'Pending' });
     sendResponse(res, {
         success: true,
         message: 'Order created successfully',

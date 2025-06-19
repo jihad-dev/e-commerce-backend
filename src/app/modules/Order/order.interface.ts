@@ -27,7 +27,7 @@ export interface IOrder {
     orderItems: IOrderItem[];
     shippingInfo: IShippingInfo;
     paymentMethod: string;
-    paymentStatus: string;
+    paymentStatus?: string;
     paymentInfo?: IPaymentInfo;
     totalPrice: number;
 
