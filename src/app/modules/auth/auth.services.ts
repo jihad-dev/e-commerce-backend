@@ -24,7 +24,7 @@ export const loginUser = async (email: string, password: string) => {
       role: user?.role,
     },
     config.jwt_secret as string,
-    { expiresIn: "3d" }
+    { expiresIn: "20s" }
   );
   // refresh token
   const refreshToken = jwt.sign(
@@ -34,7 +34,7 @@ export const loginUser = async (email: string, password: string) => {
       role: user?.role,
     },
     config.jwt_refresh_secret as string,
-    { expiresIn: "30d" }
+    { expiresIn: "20s" }
   );
   return {
     accessToken,
